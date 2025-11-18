@@ -26,6 +26,7 @@ public:
 	void print();
 	bool isBlank(int, int);
 	ValueType getCell(int, int);
+	void setCell(int, int, int);
 private:
 	// The following matrices go from 1 to BoardSize in each
 	// dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
@@ -60,6 +61,10 @@ void board::initialize(ifstream& fin)
 				setCell(i, j, ch - '0'); // Convert char to int
 		}
 }
+
+void board::setCell(int i, int j, int val) {
+	value[i][j] = val;
+} // End setCell
 int squareNumber(int i, int j)
 // Return the square number of cell i,j (counting from left to right,
 // top to bottom. Note that i and j each go from 1 to BoardSize
@@ -74,6 +79,7 @@ ostream& operator<<(ostream& ostr, vector<int>& v)
 	for (int i = 0; i < v.size(); i++)
 		ostr << v[i] << " ";
 	cout << endl;
+	return ostr;
 }
 ValueType board::getCell(int i, int j)
 // Returns the value stored in a cell. Throws an exception
@@ -126,26 +132,30 @@ int main()
 {
 	ifstream fin;
 	// Read the sample grid from the file.
-	string fileName = "sudoku.txt";
-	fin.open(fileName.c_str());
-	if (!fin)
-	{
-		cerr << "Cannot open " << fileName << endl;
-		exit(1);
-	}
-	try
-	{
-		board b1(SquareSize);
-		while (fin && fin.peek() != 'Z')
+	string fileNames[] = {"sudoku1.txt", "sudoku2.txt", "sudoku3.txt"};
+	for (int i = 0; i < 3; i++) {
+		fin.open(fileNames[i].c_str());
+		if (!fin)
 		{
-			b1.initialize(fin);
-			b1.print();
-			b1.printConflicts();
+			cerr << "Cannot open " << fileNames[i] << endl;
+			exit(1);
 		}
-	}
-	catch (indexRangeError& ex)
-	{
-		cout << ex.what() << endl;
-		exit(1);
+		try
+		{
+			board b1(SquareSize);
+			while (fin && fin.peek() != 'Z')
+			{
+				b1.initialize(fin);
+				b1.print();
+				//b1.printConflicts();
+			}
+		}
+		catch (indexRangeError& ex)
+		{
+			cout << ex.what() << endl;
+			exit(1);
+		}
+		fin.close();
+		cout << "" << endl;
 	}
 }
