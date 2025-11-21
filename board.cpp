@@ -27,6 +27,7 @@ public:
 	bool isBlank(int, int);
 	ValueType getCell(int, int);
 	void setCell(int, int, int);
+	void clearCell(int, int)
 private:
 	// The following matrices go from 1 to BoardSize in each
 	// dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
@@ -65,6 +66,11 @@ void board::initialize(ifstream& fin)
 void board::setCell(int i, int j, int val) {
 	value[i][j] = val;
 } // End setCell
+
+void board::clearCell(int i, int j) {
+	value[i][j] = 0;
+} // End clearCell
+
 int squareNumber(int i, int j)
 // Return the square number of cell i,j (counting from left to right,
 // top to bottom. Note that i and j each go from 1 to BoardSize
